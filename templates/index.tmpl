@@ -1,0 +1,22 @@
+<html>
+<body>
+<head>
+	
+</head>
+<h1>Top Page</h1>
+<ul>
+{{range $index, $post := .posts}}
+<li>
+	<a href="/post/get/{{ $post.ID }}">{{$post.Header}}</a>
+	<a href="/post/edit/{{ $post.ID }}">[Edit]</a>
+	<form method="post" action="/post/delete/{{ $post.ID }}">
+	<input type="submit" value="del">
+	<input type="hidden" name="_method" value="delete">
+	<input type="hidden" name="id" value="{{ $post.ID }}">
+	</form>
+</li>
+{{end}}
+</ul>
+<p><a href="/post/new">Add new</a></p>
+</body>
+</html>

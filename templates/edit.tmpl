@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Edit</title>
+</head>
+<body>
+<h1>Edit</h1>
+<form method="post" action="/post/update/{{ .post.ID }}">
+<p>title</p>
+<input type="text" name="header" value="{{ .post.Header }}">
+<p>body</p>
+<input type="text" name="body" value="{{ .post.Body }}">
+<input type="hidden" name="id" value="{{ .post.ID }}">
+<input type="submit" value="Update">
+</form>
+<p><a href="/index">Go Back</a></p>
+</body>
+</html>
