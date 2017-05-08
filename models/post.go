@@ -1,108 +1,69 @@
 package models
 
 import (
-    "github.com/go-xorm/xorm"
-    _ "github.com/go-sql-driver/mysql"
-    "fmt"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"fmt"
 )
 
-var engine *xorm.Engine
-// init ...
+var db *gorm.DB
+
 func init() {
-    var err error
-    engine, err = xorm.NewEngine("mysql", "root:password@/gin_sample")
-    if err != nil {
-        panic(err)
-    }
+  conn, err := gorm.Open("mysql", "root:password@/gin_sample?charset=utf8&parseTime=True&loc=Local")
+  if err != nil {
+  	panic(err)
+  }
+  db = conn
 }
 
-// Post is
+// 投稿情報の構造体
 type Post struct {
-    ID       int 		`json:"id" xorm:"'id'"`
-    Header string		`json:"header" xorm:"'header'"`
-    Body   string       `json:"body" xorm:"'body'"`
-    Author string       `json:"author" xorm:"'author'"`
-    Create_time string  `json:"create_time" xorm:"'create_time'"`
+	ID     int         `gorm:"AUTO_INCREMENT;primary_key"`
+    Header string
+    Body   string
+    Author string
+    create_time string
 }
 
-// NewPost ...
-func NewPost(id int, header string, body string, author string, create_time string) Post {
-    return Post{
-        ID:       id,
-        Header: header,
-        Body: body,
-        Author: author,
-        Create_time: create_time,
-    }
-}
-
-// UserRepository is
+// Repository
 type PostRepository struct {
 }
 
-// NewUserRepository ...
+// new PostRepository
 func NewPostRepository() PostRepository {
     return PostRepository{}
 }
 
-// GetByID ...
 func (m PostRepository) GetByPostID(id int) *Post {
-    var post = Post{ID:id}
-    has, _:= engine.Get(&post)
-    if has {
-        fmt.Println(post)
-        return &post
-    }
-    return nil
+	var post Post
+	return &post
 }
 
 // 記事を全検索
 func (m PostRepository) GetAllPost() []Post {
-    var posts []Post
-    if err := engine.Find(&posts); err != nil {
-        return nil
-    }
-    return posts
+	var post []Post
+	db.Select("").Find(&post)
+	fmt.Printf("post: %v", post)
+	return post
 }
 
 // 全記事の件名
 func (m PostRepository) GetAllHeader() []Post {
-    var headers []Post
-    if err := engine.Cols("header").Find(&headers); err != nil {
-        return nil
-    }
-    fmt.Println(headers)
-    return headers
+	var post []Post
+	return post
 }
 
 // 記事を投稿する
 func (m PostRepository) CreatePost(header string, body string, author string) interface{} {
-    var post = Post{Header: header, Body: body, Author: author}
-    fmt.Println(post)
-    affected, err := engine.Insert(&post)
-    if err != nil {
-        return nil
-    }
-    return affected
+	return nil
 }
 
 // 記事の件名と本文を更新する
 func (m PostRepository) UpdatePost(id int, header string, body string) interface{} {
-    var post = Post{ID:id, Header: header, Body: body}
-    //fmt.Printf("Value id: %v, header %v, body %v", id, header, body)
-    affected, err := engine.Update(&post, &Post{ID:id})
-    if err != nil {
-        return nil
-    }
-    return affected
+	return nil
 }
 
 // 記事を削除する
 func (m PostRepository) DeletePost(id int) interface{} {
-    post := Post{ID: id}
-    ok, err := engine.ID(id).Delete(&post)
-    if err != nil {
-        return err
-    }
-    return ok
+	return nil
 }

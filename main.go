@@ -1,7 +1,7 @@
 package main
 
 import (
-    "../gin-sample/controllers"
+    "controllers"
     "github.com/gin-gonic/gin"
     "reflect"
     "strconv"
