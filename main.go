@@ -1,7 +1,7 @@
 package main
 
 import (
-    "controllers"
+    "../gin-sample/controllers"
     "github.com/gin-gonic/gin"
     "reflect"
     "strconv"
@@ -53,7 +53,7 @@ func main() {
         // 記事を投稿
         ctrl := controllers.NewPost()
         ok := ctrl.CreatePost(header, body, author)
-        if ok == 0 {
+        if ok {
             fmt.Printf("投稿成功\n")
         }
         // トップページを表示

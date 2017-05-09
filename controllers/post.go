@@ -4,16 +4,16 @@ import (
     "../models"
 )
  
-// User is
+// Post Model
 type Post struct {
 }
  
-// NewPost ...
+// Post Modelを返す
 func NewPost() Post {
     return Post{}
 }
  
-// Get ...
+// idに合致する記事の情報を返す
 func (c Post) GetId(n int) interface{} {
     repo := models.NewPostRepository()
     post := repo.GetByPostID(n)
@@ -35,7 +35,7 @@ func (c Post) GetAllHeader() interface{} {
 }
 
 // 記事を投稿
-func (c Post) CreatePost(header string, body string, author string) interface{} {
+func (c Post) CreatePost(header string, body string, author string) bool {
 	repo := models.NewPostRepository()
 	ok := repo.CreatePost(header, body, author)
 	return ok
